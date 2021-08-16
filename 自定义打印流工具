@@ -1,0 +1,75 @@
+package 打印流.自定义打印流工具;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
+class PrintUtil {// 实现专门输出操作功能
+	private OutputStream output;// 输出只能依靠OutputStream
+
+	// 输出流的输出目标要通过构造方法传递
+	public PrintUtil(OutputStream output) {
+		this.output = output;
+	}
+
+	public void print(int x) {
+		this.print(String.valueOf(x));// valueOf(x)把传进来的参数都转为String类型
+	}
+
+	public void print(double x) {
+		this.print(String.valueOf(x));
+	}
+
+	public void print(String string) {
+		try {
+			this.output.write(string.getBytes());// 使用平台的默认字符集将此 String 编码为 byte 序列，并将结果存储到一个新的 byte 数组中。
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void println(int x) {
+		this.println(String.valueOf(x));
+	}
+
+	public void println(double x) {
+		this.println(String.valueOf(x));
+	}
+
+	public void println(String string) {
+		this.print(string.concat("\n"));// concat方法，将指定字符串连接到此字符串的结尾。
+	}
+
+	public void close() { // 输出关闭流
+		try {
+			this.output.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+}
+
+public class TestDemo {
+	public static void main(String[] args) {
+		try {
+			// 这里把创建PrintUtil、FileOutputStream、File的对象全都写一行了
+			PrintUtil pu = new PrintUtil(
+					new FileOutputStream(new File("e:" + File.separator + "demo" + File.separator + "writer.txt")));
+			pu.print("好好学习，天天向上！");
+			pu.print(1 + 1);
+			pu.print(1.1 + 1.1);
+			pu.println("好好学习，天天向上！");
+			pu.println(2 + 2);
+			pu.println(2.2 + 2.2);
+			pu.close();
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+}
